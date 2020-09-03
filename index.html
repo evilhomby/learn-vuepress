@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>使用 Vuepress 建立網站 | 搞定 Vuepress + Github Pages</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    
+    <meta name="description" content="">
+    <link rel="preload" href="/learn-vuepress/assets/css/0.styles.922eb3f5.css" as="style"><link rel="preload" href="/learn-vuepress/assets/js/app.baf1f586.js" as="script"><link rel="preload" href="/learn-vuepress/assets/js/2.2b0d3680.js" as="script"><link rel="preload" href="/learn-vuepress/assets/js/5.6bab5283.js" as="script"><link rel="prefetch" href="/learn-vuepress/assets/js/3.9f536595.js"><link rel="prefetch" href="/learn-vuepress/assets/js/4.5ed19beb.js">
+    <link rel="stylesheet" href="/learn-vuepress/assets/css/0.styles.922eb3f5.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/learn-vuepress/" aria-current="page" class="home-link router-link-exact-active router-link-active"><!----> <span class="site-name">搞定 Vuepress + Github Pages</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/learn-vuepress/" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  Home
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/learn-vuepress/" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  Home
+</a></div> <!----></nav>  <!----> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="使用-vuepress-建立網站"><a href="#使用-vuepress-建立網站" class="header-anchor">#</a> 使用 Vuepress 建立網站</h1> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 安裝 Vuepress</span>
+<span class="token function">npm</span> <span class="token function">install</span> -D vuepress
+</code></pre></div><p>建立 docs 資料夾，當然也可以使用其他名稱。並在資料夾中建立 md 檔，預設的首頁是 index.md 或 readme.md。</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">cd</span> docs
+<span class="token builtin class-name">echo</span> <span class="token string">'# Hello World'</span> <span class="token operator">&gt;&gt;</span> index.md
+</code></pre></div><p>可在 package.json 中加入 scripts 或是直接執行 (但需要在專案資料夾執行)，即可在預設的 <code>http://localhost:8080</code> 查看網站</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 在專案資料夾執行 (docs 的上層資料夾)</span>
+node_modules/.bin/vuepress dev docs
+
+<span class="token comment"># 依官網的教學設定 package.json 則在專案資料夾中任一層都可以執行</span>
+<span class="token function">npm</span> run docs:dev
+</code></pre></div><p>確認預覽結果都沒問題，即可產生靜態檔案供發佈到 Github Pages 或其他主機上。</p> <div class="language-bash extra-class"><pre class="language-bash"><code>node_modules/.bin/vuepress build docs
+
+<span class="token function">npm</span> run docs:build
+</code></pre></div><p>檔案會放置在 <code>專案資料夾\docs\.vuepress\dist</code> 中</p> <h3 id="推送到-github-pages"><a href="#推送到-github-pages" class="header-anchor">#</a> 推送到 Github Pages</h3> <p>首先需先建立一個 Repo</p> <p>由於 vuepress 每次執行 build 時會將 dist 資料夾刪後重建，因此 .git 資料夾也會被刪掉</p> <p>所以每次都要執行以下指令，或可參考官網的 Deploy 章節建立 deoply.sh 來方便部署。</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token builtin class-name">cd</span> docs<span class="token punctuation">\</span>.vuepress<span class="token punctuation">\</span>dist
+<span class="token function">git</span> init
+<span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span>
+<span class="token function">git</span> commit -m <span class="token string">'deploy'</span>
+<span class="token comment"># 強制推送後只會剩下當前的 commit 記錄</span>
+<span class="token function">git</span> push -f https://github.com/<span class="token punctuation">{</span>username<span class="token punctuation">}</span>/<span class="token punctuation">{</span>repo-name<span class="token punctuation">}</span>.git master:gh-pages
+</code></pre></div><p>在 Github 專案項目 environment 的 Active Log 會有部署的記錄。(但只有專案擁有者看得到)</p> <h3 id="關於-git-的管理"><a href="#關於-git-的管理" class="header-anchor">#</a> 關於 Git 的管理</h3> <p>將專案資料夾 push 到 master 分支；而建立的靜態檔案則 push 到 gh-pages 分支。</p> <p>當然 .gitignore 別忘了將 .vuepress/dist 給排除</p> <div class="language-txt extra-class"><pre class="language-text"><code>node_modules
+.vuepress/dist
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/learn-vuepress/assets/js/app.baf1f586.js" defer></script><script src="/learn-vuepress/assets/js/2.2b0d3680.js" defer></script><script src="/learn-vuepress/assets/js/5.6bab5283.js" defer></script>
+  </body>
+</html>
